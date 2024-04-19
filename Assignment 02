@@ -1,0 +1,147 @@
+# Assignment 2
+
+# Student info:-
+# Name: Mahmued Ahmed Alardawi
+# ID: 2135209
+# Section: CS3
+
+
+.data
+	msg1: .asciiz "How many elements do you have? "
+	msg2: .asciiz "Enter the elements of the array:\n"
+	msg3: .asciiz "The entered numbers are: "
+	msg4: .asciiz "\nThe sum is: "
+	msg5: .asciiz "\nThe maximum number is: "
+	space: .asciiz " "
+	array: .word 0
+.text
+	main:
+		la $s0, array
+		
+		li $v0, 4
+		la $a0, msg1
+		syscall
+		
+		li $v0, 5
+		syscall
+		
+		addi $s1, $v0, 0
+		mul $t0, $s1, 4
+		addi $s0, $t0, 0
+		
+		jal readArray
+		jal printArray
+		jal printSum
+		jal printMax
+			
+		li $v0, 10
+		syscall
+	
+	#
+	
+	readArray:
+		li $v0, 4
+		la $a0, msg2
+		syscall
+		
+		li $t1, 0
+		li $t2, 0
+		li $t3, 0
+		
+		readArrayLoop:
+			beq $t0, $t1, exit_readArrayLoop
+			
+			li $v0, 5
+			syscall
+			
+			sw $v0, array($t1)
+			addi $t1, $t1, 4
+			j readArrayLoop
+		
+		exit_readArrayLoop:
+			jr $ra
+		
+	#
+	
+	printArray:
+		li $v0, 4
+		la $a0, msg3
+		syscall
+		
+		li $t1, 0
+		li $t2, 0
+		li $t3, 0
+		
+		printArrayLoop:
+			beq $t0, $t1, exit_printArrayLoop
+			lw $t2, array($t1)
+			
+			li $v0, 1
+			addi $a0, $t2, 0
+			syscall
+			
+			li $v0, 4
+			la $a0, space
+			syscall
+			
+			addi $t1, $t1, 4
+			j printArrayLoop
+			
+		exit_printArrayLoop:
+			jr $ra
+			
+	#
+	
+	printSum:
+		li $v0, 4
+		la $a0, msg4
+		syscall
+		
+		li $t1, 0
+		li $t2, 0
+		li $t3, 0
+		
+		printSumLoop:
+			beq $t0, $t1, exit_printSumLoop
+			
+			lw $t2, array($t1)
+			add $t3, $t3, $t2
+			addi $t1, $t1, 4
+			j printSumLoop
+			
+		exit_printSumLoop:
+			li $v0, 1
+			addi $a0, $t3, 0
+			syscall
+			
+			jr $ra
+			
+	#
+	
+	printMax:
+		li $v0, 4
+		la $a0, msg5
+		syscall
+		
+		li $t1, 0
+		li $t2, 0
+		li $t3, 0
+		
+		printMaxLoop:
+			beq $t0, $t1, exit_printMaxLoop
+			
+			lw $t2, array($t1)
+			addi $t1, $t1, 4
+			
+			slt $t4, $t3, $t2
+			beqz $t4, next
+			addi $t3, $t2, 0
+			
+			next: j printMaxLoop
+			
+		exit_printMaxLoop:		
+			li $v0, 1
+			addi $a0, $t3, 0
+			syscall
+			
+			jr $ra	

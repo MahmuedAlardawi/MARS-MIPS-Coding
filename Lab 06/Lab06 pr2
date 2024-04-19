@@ -1,0 +1,52 @@
+# Write a program that asks user to enter N numbers and displays their Average.
+
+.data
+input_msg: .asciiz "Enter number of elements: "
+element_msg: .asciiz "Enter number "
+space: .asciiz " : "
+output_msg: .asciiz " \n  Average is "
+
+.text
+main:					# main progrma
+la $a0, input_msg		# $a0 = input_msg
+li $v0, 4				# print string $a0
+syscall
+li $v0, 5				# read intger
+syscall
+add $s0, $v0, $zero		# $s0 = $v0
+
+addi $s0, $s0, 1			# $s0 = $s0 + 1
+li $s1, 1			# $s0 = 1
+
+loop: beq $s0, $s1, exist	# if $s0 == $s1 then branch to label (exist), else continue
+
+la $a0, element_msg		# $a0 = element_msg
+li $v0, 4				# $print string $a0
+syscall
+add $a0, $s1 $zero		# $a0 = $s1
+li $v0, 1				# print integer $a0
+syscall
+la $a0, space			# $a0 = space
+li $v0, 4				# print string $a0
+syscall
+li $v0, 5				# read integer
+syscall
+add $s2, $s2, $v0			# #s2 = $v0
+
+addi $s1, $s1, 1			# $s1 = $s1 + 1
+j loop					# branch to label (loop)
+
+exist: subi $s0, $s0, 1		# $s0 = $s0 - 1 
+div $s2, $s0			# lo = $s2/$s0, ho = $s2 % $s0
+mflo $t0				# $t0 = lo
+la $a0, output_msg		# $a0 = output_msg
+li $v0, 4				# print string $a0
+syscall
+add $a0, $t0, $zero		# $a0 = $t0
+li $v0, 1				# print integer $a0
+syscall
+
+li $v0, 10				# exist program
+syscall
+
+# END

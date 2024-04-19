@@ -1,0 +1,33 @@
+# Dispaly if positive, negative, or zero
+.data
+msg1: .asciiz " Enter an integer number: "
+p_msg: .asciiz "This number is positive"
+n_msg: .asciiz "This number is negative"
+
+.text
+main:
+la $a0, msg1			# $a0 = msg1
+li $v0, 4				# print string $a0
+syscall
+
+li $v0, 5				# read integr
+syscall
+
+add $a0, $v0, $zero		# $a0 = $v0
+
+slt $t0, $a0, $zero		# if $a0 < 0 then $t0 = 1, else $t0 = 0
+beq $t0, $zero, positive
+					# (l:19) if $t0 == 0 then branch to lable (positive)
+la $a0, n_msg			# $a0 = n_msg
+li $v0, 4				# print string $a0
+syscall
+j exist				# jump to lable (exist)
+
+positive: la $a0, p_msg		# $a0 = p_msg
+li $v0, 4				# print string $a0
+syscall
+
+exist: li $v0, 10			#exist program
+syscall
+
+# END

@@ -1,0 +1,87 @@
+# Write a program that computes exp(x) by using a Taylor series: 
+# exp(x) = 1 + x + x 2 /2 + x 3 /3! + x 4 /4! + ...
+# (Hint: use the following algorithm)
+# Read x 
+# Initialize term by 1.0 and counter by 1 
+# Do: 
+# term = term * x/counter 
+# Sum+=term 
+# Counter++ 
+# Loop until sum smallest ( <0.000001 for example) 
+# Print exp(x) which is sum
+
+.data
+	msg1: .asciiz "Enter x: "
+	msg2: .asciiz "sum = "
+	msg3: .asciiz "\n"
+	msg4: .asciiz " @ "
+	zeroAsFloat: .float 0.0
+	term: .float 1.0
+	count: .float 1.0
+	compare: .float 0.000001
+	
+	
+.text
+	main:
+		lwc1 $f2, zeroAsFloat
+		lwc1 $f4, term
+		lwc1 $f6, count
+		lwc1 $f8, count
+		lwc1 $f10, compare
+		
+		li $v0, 4
+		la $a0, msg1
+		syscall
+		
+		li $v0, 6
+		syscall
+		
+		add.s $f14, $f0, $f2
+		
+		loop:
+		div.s $f16, $f14, $f6
+		mul.s $f4, $f4, $f16
+		add.s $f18, $f18, $f4
+		add.s $f6, $f6, $f8
+		
+		li $v0, 4
+		la $a0, msg3
+		syscall
+		
+		li $v0, 2
+		add.s $f12, $f16, $f2
+		syscall
+		li $v0, 4
+		la $a0, msg4
+		syscall
+		li $v0, 2
+		add.s $f12, $f4, $f2
+		syscall
+		li $v0, 4
+		la $a0, msg4
+		syscall
+		li $v0, 2
+		add.s $f12, $f18, $f2
+		syscall
+		li $v0, 4
+		la $a0, msg4
+		syscall
+		li $v0, 2
+		add.s $f12, $f6, $f2
+		syscall
+		
+		c.lt.s  $f18, $f10
+		bc1t exist
+		j loop
+		
+		exist:
+		li $v0, 4
+		la $a0, msg2
+		syscall
+		
+		li $v0, 2
+		add.s $f12, $f18, $f2
+		syscall
+		
+		li $v0, 10
+		syscall

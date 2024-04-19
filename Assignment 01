@@ -1,0 +1,61 @@
+# Assignment 1
+
+# Student info:-
+# Name: Mahmued Ahmed Alardawi
+# ID: 2135209
+# Section: CS3
+
+.data
+user_input: .asciiz "Enter your data usage in MB: "
+msg1.1: .asciiz "Your usege is "
+msg1.2: .asciiz " GB and "
+msg1.3: .asciiz " MB\n"
+w_msg: .asciiz "Warning! You have exceeded your data usage limit"
+
+.text
+main:				# main program	
+la $a0, user_input	# $a0 = user_msg
+li $v0, 4			# print string $a0
+syscall
+
+li $v0, 5			# read integer
+syscall
+
+add  $a0, $v0, $zero	# $a0 = $v0
+addi $t0, $t0, 1024 	# $t0 = 1024
+div $a0, $t0		# lo = $a0/$t0, hi = $a0 % $t0 
+mflo $t1			# $t1 = lo
+mfhi $t2			# $t2 = hi
+
+la $a0, msg1.1		# $a0 = msg1.1
+li $v0, 4			# print string $a0
+syscall
+
+add $a0, $t1, $zero	# $a0 = $t1
+li $v0, 1			# print integer $a0
+syscall
+
+la $a0, msg1.2		# $a0 = msg1.2
+li $v0, 4			# print string $a0
+syscall
+
+add $a0, $t2, $zero	# $a0 = $t1
+li $v0, 1			# print integer $a0
+syscall
+
+la $a0, msg1.3		# $a0 = msg1.3
+li $v0, 4			# print string $a0
+syscall
+
+addi $s0, $s0, 30		# $s0 = 30 GB
+slt $s1, $s0, $t1		# if $s0 < $t1 then $s1 = 1, else $s1 = 0
+beq $s1, $zero, exist	# if  $s1 == 0 then branch to lable (exist), else continue
+
+la $a0, w_msg		# # $a0 = w_msg
+li $v0, 4			# print string $a0
+syscall
+
+exist: li $v0, 10		# exist program
+syscall
+
+# END

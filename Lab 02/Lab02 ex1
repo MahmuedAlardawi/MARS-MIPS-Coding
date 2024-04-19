@@ -1,0 +1,16 @@
+# Hello World in MIPS Assembly
+
+.data
+hello_msg: .asciiz "Hello World!\n"
+
+.text
+# main program
+main:
+la $a0, hello_msg	# $a0 = hello_msg
+li $v0, 4			# print string $a0
+syscall 
+
+li $v0, 10			# exist program
+syscall
+
+# END

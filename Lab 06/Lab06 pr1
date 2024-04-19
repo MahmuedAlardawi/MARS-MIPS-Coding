@@ -1,0 +1,39 @@
+# Write a program that prints the numbers from 1 to given number N.
+
+.data
+input_msg: .asciiz "Enter the end of series: "
+output_msg: .asciiz "Enter the end of series: "
+space: .asciiz " "
+
+.text
+main:				# main program
+la $a0, input_msg	# $a0 = input_msg
+li $v0, 4			# print string $a0
+syscall
+li $v0, 5			# read integer
+syscall
+add $s0, $v0, $zero	# $s0 = $v0
+
+addi $s0, $s0, 1		# $s0 = $s0 + 1
+li $s1, 1			# $s1 = 1
+
+la $a0, output_msg	# $a = output_msg
+li $v0, 4			# print string $a0
+syscall
+
+loop: beq $s0, $s1, exist# if $s0 == $s1 then branch to label (exist), else continue
+
+add $a0, $s1, $zero	# $a0 = $s1
+li $v0, 1			# print integer $a0
+syscall
+la $a0, space		# $a0 = space
+li $v0, 4			# print string $a0
+syscall
+
+addi $s1, $s1, 1		# $s1 = $s1 + 1
+j loop				# branch to label (loop)
+
+exist: li $v0, 10		# exist program
+syscall
+
+# END

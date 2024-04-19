@@ -1,0 +1,58 @@
+# Maximum number program
+
+.data
+input_msg: .asciiz "Enter two integer numbers:-\n"
+integer1_msg: .asciiz "Integer 1: " 
+integer2_msg: .asciiz "Integer 2: " 
+output1_msg: .asciiz " is the maximum number"
+output2_msg: .asciiz "There is no maximum number"
+
+.text
+main:
+la $a0, input_msg		# $a0 = input_msg	
+li $v0, 4				# print string $a0
+syscall
+
+la $a0, integer1_msg		# $a0 = integer1_msg
+li $v0, 4				# print string $a0
+syscall
+li $v0, 5				# read integer
+syscall
+add $s0, $v0, $zero		# $s0 = $v0
+
+la $a0, integer2_msg		# $a0 = integer2_msg
+li $v0, 4				# print string $a0
+syscall
+li $v0, 5				# read integer
+syscall
+add $s1, $v0, $zero		# $s1 = $v0
+
+beq $s0, $s1, equals		# if $s0 == $s1 then branch to lable (equals)
+
+slt $t0, $s0, $s1			# if $s0 < $s1 then $t0 = 1, else $t0 = 0
+bne $t0, $zero, s1		# if $t0 != 0 then branch to lable (s1), else continue
+
+add $a0, $s0, $zero		# $a0 = $s0
+li $v0, 1				# print integer $a0
+syscall
+la $a0, output1_msg		# $a0 = output1_msg
+li $v0, 4				# print string $a0
+syscall
+j exist				# jump to lable (exist)
+
+s1: add $a0, $s1, $zero		# $a0 = $s1 
+li $v0, 1				# print integer $a0
+syscall
+la $a0, output1_msg		# $a0 = output1_msg
+li $v0, 4				# print string $a0
+syscall
+j exist				# jump to lable (exist)
+
+equals: la $a0, output2_msg	# $a0 = output2_msg
+li $v0, 4				# print string $a0
+syscall
+
+exist: li $v0, 10			# exist program
+syscall
+
+# END

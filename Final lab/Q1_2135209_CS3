@@ -1,0 +1,96 @@
+# Name: Mahmued Ahmed Alardawi
+# Id: 2135209
+# Section: CS3
+
+.data
+	msg1: .asciiz "How many elements do you have? "
+	msg2: .asciiz "Enter the elements values: \n"
+	msg3: .asciiz "The array values are: "
+	msg4: .asciiz "\nEnter a number to subtract: "
+	space: .asciiz " "
+	array: .word 4
+.text
+	main:
+		la $t0, array
+		
+		li $v0, 4
+		la $a0, msg1
+		syscall
+		
+		li $v0, 5
+		syscall
+		add $t1, $v0, $zero
+		mult $t1, $t4
+		mflo $t3
+		add $t0, $t3, $zero		
+		
+		li $v0, 4
+		la $a0, msg2
+		syscall
+		
+		li $t4, 4
+		loop1:
+		beq $t2, $t1, exit_loop1
+		li $v0, 5
+		syscall
+		sw $v0, array($t4)
+		addi $t4, $t4, 4
+		addi $t2, $t2, 1
+		j loop1
+		
+		exit_loop1:	
+		jal printArray	
+		
+		li $v0, 4
+		la $a0, msg4
+		syscall
+		
+		li $v0, 5
+		syscall
+		add $t5, $v0, $zero
+		
+		li $t2, 0
+		li $t4, 4
+
+		loop2:
+		beq $t2, $t1, exit_loop2
+		lw $t6, array($t4)
+		sub $t6, $t6, $t5
+		sw $t6, array($t4)
+		addi $t4, $t4, 4
+		addi $t2, $t2, 1
+		j loop2
+		
+		exit_loop2:
+		jal printArray
+		
+		li $v0, 10
+		syscall
+		
+		
+		printArray:
+		
+			li $s0, 4
+			add $s1, $t1, $zero
+			
+			li $v0, 4
+			la $a0, msg3
+			syscall
+		
+			arrayLoop:
+				beqz $s1, exit_arrayLoop
+				lw $a0, array($s0)
+				addi $s0, $s0, 4
+				subi $s1, $s1, 1
+				
+				li $v0, 1
+				syscall
+				
+				li $v0, 4
+				la $a0, space
+				syscall
+			
+				j arrayLoop
+		
+			exit_arrayLoop:
+				jr $ra		

@@ -1,0 +1,24 @@
+.data 
+ numbers: .asciiz "Numbers from 1 to 10 : "
+ space: .asciiz " "
+.text
+main:
+ li $s0,1 # counter
+ li $s1,10 # limit
+ loop:
+ # check if the counter reach to the limit
+ bgt $s0,$s1, end
+ # display the current number
+ move $a0,$s0
+ li $v0,1
+ syscall
+ #print space 
+ la $a0, space
+ li $v0,4
+ syscall
+ # increnet the counter
+ addi $s0,$s0,1
+ j loop
+end: # end of program
+ li $v0,10
+ syscall

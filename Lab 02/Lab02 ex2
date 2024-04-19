@@ -1,0 +1,16 @@
+# Program that Reads and Prints an Integer number
+
+.text
+# main program
+main:
+ li $v0, 5 				# read integer
+ syscall 	
+ 
+ add $a0, $v0 , $zero		# $a0 = $vo
+ li $v0, 1 				# print integer $a0
+ syscall 
+ 
+ li $v0, 10 	 			# exit program
+ syscall
+ 
+ # END 

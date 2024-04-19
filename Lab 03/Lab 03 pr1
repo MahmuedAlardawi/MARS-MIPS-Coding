@@ -1,0 +1,50 @@
+# Write a program to compute the following equation
+# y= 2x+z+5
+
+# Output:
+#Enter value of x: 5
+#Enter value of z: 10
+#y is 25
+
+.data	
+x_msg: .asciiz "Enter value of x: "
+z_msg: .asciiz "Enter value of z: "
+y_msg: .asciiz "y is " 
+
+# x = $t0	z = $t1
+
+.text
+main:				# main program
+la $a0, x_msg			# $a0 = x_msg
+li $v0, 4				# print x_msg
+syscall
+
+li $v0, 5				# read integer x
+syscall
+
+add $t0, $v0, $zero		# $t0 = $v0
+
+la $a0, z_msg			# $a0 = z_msg
+li $v0, 4				# print z_msg
+syscall
+
+li $v0, 5				# read integer z
+syscall
+
+add $t1, $v0, $zero		# $t1 = $v0
+
+la $a0, y_msg			# $a0 = y_msg
+li $v0, 4				# print y_msg
+syscall
+
+sll $t0, $t0, 1			# $t0 = $t0 * 2
+add $a0, $t0, $t1		# $a0 = $t0 + $t1
+addi $a0, $a0, 5			# $a0 = $a0 + 5
+
+li $v0, 1				# print integer $a0
+syscall
+
+li $v0, 10				# exist program
+syscall
+
+# END

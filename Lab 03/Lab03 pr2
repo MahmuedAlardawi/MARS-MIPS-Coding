@@ -1,0 +1,35 @@
+#Write A Program that asks for your input then outputs what you typed.
+
+# output:
+# Please enter any string: How are you
+# You typed: How are you
+
+.data
+msg1: .asciiz "Please enter any string: "
+msg2: .asciiz "You typed: "
+input: .space 101
+inputSize: .word 100
+
+.text
+main:			#main program
+la $a0, msg1		# $a0 = msg1
+li $v0, 4			# print $a0
+syscall
+
+la $a0, input		# give $a0 empty address (input)
+lw $a1, inputSize	# size for the enterd string
+li $v0, 8			# read string
+syscall
+
+la $a0, msg2		# $a0 = msg2
+li $v0, 4			# print $a0
+syscall
+
+la $a0, input		# $a0 = input
+li $v0, 4			# print $a0
+syscall
+
+li $v0, 10			# exist program
+syscall
+
+# END
